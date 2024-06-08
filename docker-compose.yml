@@ -29,5 +29,18 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
 
+  client:
+    build:
+      context: ./karamap-client
+    ports:
+      - "8080:3000"
+    depends_on:
+      - app
+    volumes:
+      - ./karamap-client:/usr/src/app
+      - /usr/src/app/node_modules
+    # command: ["sh", "-c", "while :; do sleep 2073600; done"]
+    # command: ["npm", "start"]
+
 volumes:
   db_data:

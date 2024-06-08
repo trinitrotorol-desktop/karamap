@@ -1,10 +1,12 @@
 const express = require('express');
 const sequelize = require('./db');
 const KaraokeStore = require('./models/KaraokeStore');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
 
 app.get('/api/karaoke-stores', async (req, res) => {
