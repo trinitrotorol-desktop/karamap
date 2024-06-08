@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: your_password
+      MYSQL_DATABASE: karaoke
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: karaoke
+    depends_on:
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  client:
+    build:
+      context: ./karamap-client
+    ports:
+      - "8080:3000"
+    depends_on:
+      - app
+    volumes:
+      - ./karamap-client:/usr/src/app
+      - /usr/src/app/node_modules
+    # command: ["sh", "-c", "while :; do sleep 2073600; done"]
+    # command: ["npm", "start"]
+
+volumes:
+  db_data:
